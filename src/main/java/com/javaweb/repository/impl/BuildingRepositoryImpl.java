@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -19,16 +20,20 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 	static final String user = "root";
 	static final String pass = "root";
 	@Override
-	public List<BuildingEntity> findAll() {
-		String sql = "select * from Building";
+	public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typeCode) {
+		StringBuilder sql = new StringBuilder("select * from Building b");
+				
+		StringBuilder where = new StringBuilder(" where 1=1");
+		sql.append(where);
+		
 		List<BuildingEntity> buildingEntities = new ArrayList<>();
 		try(	Connection conn = DriverManager.getConnection(url,user,pass);
 				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql);) {
+				ResultSet rs = stmt.executeQuery(sql.toString());) {
 			while(rs.next()) {
 				BuildingEntity building = new BuildingEntity();
 				building.setId(rs.getInt("id"));
-				building.setDistrict(rs.getString("district"));
+				
 				building.setWard(rs.getString("ward"));
 				buildingEntities.add(building);
 			}

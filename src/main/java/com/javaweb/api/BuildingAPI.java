@@ -1,9 +1,11 @@
 package com.javaweb.api;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javaweb.customEX.InvalidRequiredException;
@@ -17,16 +19,12 @@ public class BuildingAPI {
 	private BuildingService buildingService;
 	
 	@GetMapping("/test")                                                                                                           
-	public List<BuildingDTO> test () {
-		List<BuildingDTO> buildingDTOs = buildingService.findAll();
+	public List<BuildingDTO> test (@RequestParam Map<String, Object> params, List<String> typeCode) {
+		List<BuildingDTO> buildingDTOs = buildingService.findAll(params,typeCode);
 		return buildingDTOs;
 	}
 	
-	public void valiRequired(BuildingDTO building) throws InvalidRequiredException {
-	    if (building.getAdress() == null || building.getAdress().equals("")) {
-	        throw new InvalidRequiredException("Chưa lấy đủ thông tin");
-	    } 
-	}
+	
 	
 	
 	

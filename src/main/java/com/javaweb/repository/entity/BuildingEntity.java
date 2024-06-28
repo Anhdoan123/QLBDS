@@ -4,10 +4,28 @@ import java.sql.Date;
 
 public class BuildingEntity {
 	private long id,districtid;
-	private String name,street,ward,structure,direction,level,rentpricedescription,servicefee,carfee,motorbikefee,overtimefee;
-	private String waterfee,electricityfee,deposit,payment,renttime,decorationtime,note,linkofbuilding,map,image,createdby,modifiedby,managername,managerphonenumber;
+	private String name,street,ward,structure,direction,level,rentpricedescription,servicefee,carfee,motorbikefee,overtimefee,brokeragefee,rentarea;
+	public String getRentarea() {
+		return rentarea;
+	}
+	public void setRentarea(String rentarea) {
+		this.rentarea = rentarea;
+	}
+	private String waterfee,electricityfee,deposit,payment,renttime,decorationtime,note,linkofbuilding,map,image,createdby,modifiedby,managername,managerphonenumber,districtname;
+	public String getDistrictname() {
+		return districtname;
+	}
+	public void setDistrictname(String districtname) {
+		this.districtname = districtname;
+	}
 	private int numberofbasement,floorarea,rentprice;
-	private float brokeragefee;
+
+	public void setBrokeragefee(String brokeragefee) {
+		this.brokeragefee = brokeragefee;
+	}
+	public String getBrokeragefee() {
+		return brokeragefee;
+	}
 	private Date createddate,modifieddate;
 	public long getId() {
 		return id;
@@ -188,12 +206,6 @@ public class BuildingEntity {
 	}
 	public void setRentprice(int rentprice) {
 		this.rentprice = rentprice;
-	}
-	public float getBrokeragefee() {
-		return brokeragefee;
-	}
-	public void setBrokeragefee(float brokeragefee) {
-		this.brokeragefee = brokeragefee;
 	}
 	public Date getCreateddate() {
 		return createddate;

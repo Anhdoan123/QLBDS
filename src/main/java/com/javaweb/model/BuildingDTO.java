@@ -3,8 +3,8 @@ package com.javaweb.model;
 import java.sql.Date;
 
 public class BuildingDTO {
-	private String name,address,numberOfBasement,managername,managerphonenumber,servicefee,brokeragefee,rentarea;
-	private int floorarea,emptyarea,rentprice;
+	private String name,address,managername,managerphonenumber,servicefee,brokeragefee,rentarea;
+	private int floorarea,emptyarea,rentprice,numberOfBasemen;
 	public String getName() {
 		return name;
 	}
@@ -17,11 +17,12 @@ public class BuildingDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getNumberOfBasement() {
-		return numberOfBasement;
+	
+	public int getNumberOfBasemen() {
+		return numberOfBasemen;
 	}
-	public void setNumberOfBasement(String numberOfBasement) {
-		this.numberOfBasement = numberOfBasement;
+	public void setNumberOfBasemen(int numberOfBasemen) {
+		this.numberOfBasemen = numberOfBasemen;
 	}
 	public String getManagername() {
 		return managername;

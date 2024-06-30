@@ -1,4 +1,5 @@
 package com.javaweb.api;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,11 @@ public class BuildingAPI {
 	private BuildingService buildingService;
 	
 	@GetMapping("/test")                                                                                                           
-	public List<BuildingDTO> test (@RequestParam Map<String, Object> params,@RequestParam List<String> typecode) {
+	public List<BuildingDTO> test (@RequestParam(required = false) Map<String, Object> params,@RequestParam(required = false) List<String> typecode) {
+		if(typecode == null)
+		{
+			typecode = new ArrayList<String>();
+		}
 		List<BuildingDTO> buildingDTOs = buildingService.findAll(params,typecode);
 		return buildingDTOs;
 	}

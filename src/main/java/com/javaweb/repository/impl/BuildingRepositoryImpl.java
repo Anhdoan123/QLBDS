@@ -11,10 +11,8 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.javaweb.Until.checkUntil;
-import com.javaweb.model.errorDTO;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.entity.BuildingEntity;
-import com.javaweb.repository.entity.DistrictEntity;
 
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository {
@@ -80,15 +78,26 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			sql.append(" and b.rentprice <= "+rentpriceTo+"");
 		}
 	}
+
 	private void checkTypeCode(List<String> typecode, StringBuilder sql) {
+		Integer size = typecode.size();
 		int flag = 0;
 		String typeCode = String.valueOf(typecode);
-		if(!checkUntil.valueIsEmpty(typeCode)) {
-			for(String item : typecode) {
-				if(flag == 0) sql.append(" and r.code like '%"+item+"%'");
-				else sql.append(" or r.code like '%"+item+"%'");
+		if (!checkUntil.valueIsEmpty(typeCode)) {
+			for (String item : typecode) {
+				if (size == 1) {
+					sql.append(" and r.code like '%" + item + "%'");
+					return;
+				}
+				if (size > 1 && flag < 1) {
+					sql.append(" and (r.code like '%" + item + "%'");
+				}
+				else {
+					sql.append(" or r.code like '%" + item + "%'");
+				}
 				flag++;
 			}
+			if(flag > 0) sql.append(")");
 		}
 	}
 	
@@ -97,14 +106,18 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 
 	@Override
 	public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typecode) {
+		//Select
 		StringBuilder sql = new StringBuilder("select b.name,b.street,b.ward,d.name,b.numberofbasement,b.managername,"
 				+ "b.managerphonenumber,b.floorarea,b.rentprice,b.servicefee,b.brokeragefee,"
 				+ "GROUP_CONCAT(DISTINCT r2.value ) 'rentarea' from building b");
+		//from
 		joinTable(params, sql);
 		StringBuilder where = new StringBuilder(" where 1=1");
+		//where
 		sql.append(where);
 		normalQuery(params, sql);
 		specialQuery(params,typecode,sql);
+		//group by
 		StringBuilder groupBy = new StringBuilder(" group by b.name,b.street,b.ward,d.name,b.numberofbasement,b.managername,"
 				+ "b.managerphonenumber,b.floorarea,b.rentprice,b.servicefee,b.brokeragefee");
 		sql.append(groupBy);

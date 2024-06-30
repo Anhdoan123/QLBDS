@@ -28,7 +28,7 @@ public class BuildingServiceImpl implements BuildingService{
 			building.setManagername(item.getManagername());
 			building.setManagerphonenumber(item.getManagerphonenumber());
 			building.setFloorarea(item.getFloorarea());
-			building.setRentprice(item.getRentprice());
+			building.setRentprice(item.getRentprice() + " triệu/m2");
 			building.setBrokeragefee(item.getBrokeragefee());
 			building.setRentarea(item.getRentarea());
 			buildings.add(building);

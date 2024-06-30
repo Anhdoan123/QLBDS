@@ -28,10 +28,11 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 
 		String typeCode = String.valueOf(params.get("typecode"));
 		if (!checkUntil.valueIsEmpty(typeCode)) {
-			sql.append(" inner join buildingrenttype b2 on b2.buildingid = b.id inner join renttype r on r.id = b2.renttypeid");
+			sql.append(" inner join buildingrenttype b2 on b2.buildingid = b.id");
+			sql.append(" inner join renttype r on r.id = b2.renttypeid");
 		}
 
-		sql.append(" inner join rentarea r2 on r2.buildingid = b.id ");
+		sql.append(" inner join rentarea r2 on r2.buildingid = b.id");
 
 		sql.append(" inner join district d on d.id = b.districtid");
 	}

@@ -13,13 +13,10 @@ import org.springframework.stereotype.Repository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.utils.CheckUtil;
+import com.javaweb.utils.ConnectJDBC;
 
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository {
-	static final String url = "jdbc:mysql://localhost:3306/estatebasic";
-	static final String user = "root";
-	static final String pass = "root";
-
 	public void joinTable(Map<String, Object> params, StringBuilder sql) {
 		String staffid = String.valueOf(params.get("staffid"));
 		if (!CheckUtil.valueIsEmpty(staffid)) {
@@ -103,9 +100,9 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 	@Override
 	public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typecode) {
 		// Select
-		StringBuilder sql = new StringBuilder("select b.name,b.street,b.ward,b.numberofbasement,b.managername,"
-				+ "b.managerphonenumber,b.floorarea,b.districtid,b.rentprice,b.servicefee,b.brokeragefee,"
-				+ "GROUP_CONCAT(DISTINCT r2.value ) 'rentarea' from building b");
+		StringBuilder sql = new StringBuilder("select b.id,b.name,b.street,b.ward,b.numberofbasement,b.managername,"
+				+ "b.managerphonenumber,b.floorarea,b.districtid,b.rentprice,b.servicefee,b.brokeragefee"
+				+ " from building b");
 		// from
 		joinTable(params, sql);
 		StringBuilder where = new StringBuilder(" where 1=1");
@@ -115,16 +112,15 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		specialQuery(params, typecode, sql);
 		// group by
 		StringBuilder groupBy = new StringBuilder(
-				" group by b.name,b.street,b.ward,b.numberofbasement,b.managername,b.districtid,"
+				" group by b.id,b.name,b.street,b.ward,b.numberofbasement,b.managername,b.districtid,"
 						+ "b.managerphonenumber,b.floorarea,b.rentprice,b.servicefee,b.brokeragefee");
 		sql.append(groupBy);
 
 		List<BuildingEntity> buildingEntities = new ArrayList<>();
-		try (Connection conn = DriverManager.getConnection(url, user, pass);
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql.toString());) {
-			while (rs.next()) {
+		try (ResultSet rs = ConnectJDBC.executeQuery(sql.toString());) {
+			while (rs.next()) { 
 				BuildingEntity building = new BuildingEntity();
+				building.setId(rs.getLong("b.id"));
 				building.setName(rs.getString("b.name"));
 				building.setStreet(rs.getString("b.street"));
 				building.setWard(rs.getString("b.ward"));
@@ -136,7 +132,6 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				building.setRentprice(rs.getInt("b.rentprice"));
 				building.setServicefee(rs.getString("b.servicefee"));
 				building.setBrokeragefee(rs.getString("b.brokeragefee"));
-				building.setRentarea(rs.getString("rentarea"));
 				buildingEntities.add(building);
 			}
 

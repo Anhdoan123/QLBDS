@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -80,20 +81,10 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		int flag = 0;
 		String typeCode = String.valueOf(typecode);
 		if (!CheckUtil.valueIsEmpty(typeCode)) {
-			for (String item : typecode) {
-				if (size == 1) {
-					sql.append(" and r.code like '%" + item + "%'");
-					return;
-				}
-				if (size > 1 && flag < 1) {
-					sql.append(" and (r.code like '%" + item + "%'");
-				} else {
-					sql.append(" or r.code like '%" + item + "%'");
-				}
-				flag++;
-			}
-			if (flag > 0)
-				sql.append(")");
+			sql.append(" and(");
+			String sqlQ = typecode.stream().map(item -> "r.code like '%"+item+"%'").collect(Collectors.joining(" or "));
+			sql.append(sqlQ);
+			sql.append(")");
 		}
 	}
 

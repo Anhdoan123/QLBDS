@@ -20,9 +20,6 @@ public class BuildingAPI {
 	@GetMapping("/test")
 	public List<BuildingDTO> test(@RequestParam(required = false) Map<String, Object> params,
 			@RequestParam(name = "typecode", required = false) List<String> typecode) {
-		if (typecode == null) { 
-			typecode = new ArrayList<String>();
-		}
 		List<BuildingDTO> buildingDTOs = buildingService.findAll(params, typecode);
 		return buildingDTOs;
 	}

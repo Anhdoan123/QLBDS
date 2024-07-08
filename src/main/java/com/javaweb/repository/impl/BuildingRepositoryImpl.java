@@ -77,9 +77,8 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 	}
 
 	private void checkTypeCode(List<String> typecode, StringBuilder sql) {
-		Integer size = typecode.size();
-		int flag = 0;
 		String typeCode = String.valueOf(typecode);
+		System.out.println("asdasd: " + typeCode);
 		if (!CheckUtil.valueIsEmpty(typeCode)) {
 			sql.append(" and(");
 			String sqlQ = typecode.stream().map(item -> "r.code like '%"+item+"%'").collect(Collectors.joining(" or "));

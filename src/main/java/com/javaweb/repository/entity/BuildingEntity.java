@@ -2,6 +2,11 @@ package com.javaweb.repository.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+
+
+
+@Entity
 public class BuildingEntity {
 	private long id, districtid;
 	private String name, street, ward, structure, direction, level, rentpricedescription, servicefee, carfee,

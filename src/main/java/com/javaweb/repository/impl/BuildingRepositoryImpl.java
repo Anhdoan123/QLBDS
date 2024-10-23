@@ -102,8 +102,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		specialQuery(params, typecode, sql);
 		// group by
 		StringBuilder groupBy = new StringBuilder(
-				" group by b.id,b.name,b.street,b.ward,b.numberofbasement,b.managername,b.districtid,"
-						+ "b.managerphonenumber,b.floorarea,b.rentprice,b.servicefee,b.brokeragefee");
+				" group by b.id");
 		sql.append(groupBy);
 
 		List<BuildingEntity> buildingEntities = new ArrayList<>();

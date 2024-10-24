@@ -2,6 +2,8 @@ package com.javaweb.repository.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -9,19 +11,22 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Repository;
 
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.utils.CheckUtil;
 
-
 @Repository
-@Primary
-public class JPABuildingReponsitoryImpl implements BuildingRepository{
+public class JPABuildingReponsitoryImpl implements BuildingRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	public void joinTable(Map<String, Object> params, StringBuilder sql) {
 		String staffid = String.valueOf(params.get("staffid"));
 		if (!CheckUtil.valueIsEmpty(staffid)) {
@@ -46,7 +51,12 @@ public class JPABuildingReponsitoryImpl implements BuildingRepository{
 				if (CheckUtil.isNumber(value)) {
 					sql.append(" and " + key + " = " + value + "");
 				} else {
-					sql.append(" and " + key + " like '%" + value + "%'");
+					if(key.equals("name")) {
+						sql.append(" and b." + key + " like '%" + value + "%'");
+					}
+					else {
+						sql.append(" and " + key + " like '%" + value + "%'");
+					}
 				}
 			}
 		}
@@ -85,13 +95,13 @@ public class JPABuildingReponsitoryImpl implements BuildingRepository{
 		System.out.println("asdasd: " + typeCode);
 		if (!CheckUtil.valueIsEmpty(typeCode)) {
 			sql.append(" and(");
-			String sqlQ = typecode.stream().map(item -> "r.code like '%"+item+"%'").collect(Collectors.joining(" or "));
+			String sqlQ = typecode.stream().map(item -> "r.code like '%" + item + "%'")
+					.collect(Collectors.joining(" or "));
 			sql.append(sqlQ);
 			sql.append(")");
 		}
 	}
 
-	
 	@Override
 	public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typecode) {
 		// Select
@@ -111,5 +121,7 @@ public class JPABuildingReponsitoryImpl implements BuildingRepository{
 		Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
 		return query.getResultList();
 	}
+
+	
 
 }

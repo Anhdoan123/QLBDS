@@ -37,4 +37,6 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildings;
 	}
 
+
+
 }

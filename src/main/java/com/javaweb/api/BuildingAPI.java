@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javaweb.model.BuildingDTO;
+import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.service.BuildingService;
 
 @RestController
@@ -24,5 +25,7 @@ public class BuildingAPI {
 		List<BuildingDTO> buildingDTOs = buildingService.findAll(params, typecode);
 		return buildingDTOs;
 	}
+	
+
 
 }

@@ -8,4 +8,6 @@ import com.javaweb.repository.entity.BuildingEntity;
 
 public interface BuildingService {
 	List<BuildingDTO> findAll(Map<String, Object> params, List<String> typecode);
+	List<BuildingDTO> findAll();
+	List<BuildingDTO> findBuildingByNameAndManagerName(String name, String managerName);
 }

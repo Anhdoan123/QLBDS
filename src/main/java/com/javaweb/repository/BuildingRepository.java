@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.javaweb.repository.entity.BuildingEntity;
 
-public interface BuildingRepository{
-	List<BuildingEntity> findAll(Map<String, Object> params, List<String> typeCode);
+public interface BuildingRepository extends JpaRepository<BuildingEntity, Long>{
+//	List<BuildingEntity> findAll(Map<String, Object> params, List<String> typeCode);
+	List<BuildingEntity> findByNameContainingAndManagernameContaining(String name,String managerName);
 }

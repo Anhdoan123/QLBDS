@@ -1,4 +1,4 @@
-package com.javaweb.repository.impl;
+package com.javaweb.repository.custom.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.utils.CheckUtil;
 
 @Repository
-public class JPABuildingReponsitoryImpl implements BuildingRepository {
+public class JPABuildingReponsitoryImpl  {
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -102,7 +102,7 @@ public class JPABuildingReponsitoryImpl implements BuildingRepository {
 		}
 	}
 
-	@Override
+//	@Override
 	public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typecode) {
 		// Select
 		StringBuilder sql = new StringBuilder("select b.* from building b");
